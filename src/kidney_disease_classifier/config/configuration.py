@@ -75,7 +75,7 @@ class ConfigurationManager:
         params = self.params
 
         # Define the path to the training data
-        training_data = os.path.join(self.config.data_ingestion.unzip_dir, "Data")
+        training_data = os.path.join(self.config.data_ingestion.unzip_dir, "kidney-ct-scan-image")
 
         # Create necessary directories for training
         create_directories([
@@ -103,8 +103,8 @@ class ConfigurationManager:
         eval_config = EvaluationConfig(
             path_of_model="artifacts/training/model.h5",
             # training_data="artifacts/data_ingestion/Chest-CT-Scan-data",
-            validation_data_dir="artifacts/data_ingestion/Data/valid",
-            training_data="artifacts/data_ingestion/Data/train",
+            validation_data_dir="artifacts/data_ingestion/kidney-ct-scan-image/valid",
+            training_data="artifacts/data_ingestion/kidney-ct-scan-image/train",
             mlflow_uri="https://dagshub.com/muhammadadilnaeem/Kidney-Disease-Classification-Using-MLFlow-And-DVC.mlflow",
             all_params=self.params,
             params_image_size=self.params.IMAGE_SIZE,
