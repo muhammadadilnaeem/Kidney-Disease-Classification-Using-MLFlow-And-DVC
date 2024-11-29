@@ -24,10 +24,11 @@ list_of_files = [
     "config/config.yaml",
     "dvc.yaml",
     "params.yaml",
-    "Dockerfile"
+    "Dockerfile",
     "requirements.txt",
     "setup.py",
     "streamlit.py",
+    "demo.py",
     "research/trials.ipynb",
     "templates/index.html",
 
