@@ -13,13 +13,16 @@ project_name = "kidney_disease_classifier"
 # specify files and folders to be created
 list_of_files = [
     ".github/workflows/.gitkeep",
+    ".github/workflows/main.yaml",
     f"src/{project_name}/__init__.py",
     f"src/{project_name}/components/__init__.py",
     f"src/{project_name}/utils/__init__.py",
+    f"src/{project_name}/utils/common_functions.py",
     f"src/{project_name}/config/__init__.py",
     f"src/{project_name}/config/configuration.py",
     f"src/{project_name}/pipeline/__init__.py",
     f"src/{project_name}/entity/__init__.py",
+    f"src/{project_name}/entity/config_entity.py",
     f"src/{project_name}/constants/__init__.py",
     "config/config.yaml",
     "dvc.yaml",
