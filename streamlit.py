@@ -144,7 +144,7 @@ class PredictionPipeline:
         return "Tumor" if result[0] == 1 else "Normal"
 
 # Load the model only once to save resources
-MODEL_PATH = r"artifacts/training/model.h5"
+MODEL_PATH = r"model/model.h5"
 pipeline = PredictionPipeline(MODEL_PATH)
 
 if uploaded_file:
