@@ -1,6 +1,6 @@
+from kidney_disease_classifier import logger
 from kidney_disease_classifier.config.configuration import ConfigurationManager
 from kidney_disease_classifier.components.model_evaluation_with_mlflow import Evaluation
-from kidney_disease_classifier import logger
 
 
 # Define the name of the current stage
@@ -40,6 +40,7 @@ if __name__ == '__main__':
         
         # Log the completion of the evaluation stage
         logger.info(f">>>>>> stage {STAGE_NAME} completed <<<<<<\n\nx==========x")
+    
     except Exception as e:
         # Log any exceptions that occur during the execution
         logger.exception(e)
