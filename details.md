@@ -514,7 +514,15 @@
 
     - For this project we will first set up our Dagshub account and then use our **github repository** in **Dagshub** for **experiment tracking using MLflow**.
 
-        - An example of MLflow code is:
+        - We also need to store our secret **dagshub** credentials. For this we will use **`.env`** file. Our credentials will look like this
+
+            ```bash
+            MLFLOW_TRACKING_URI="https://dagshub.com/muhammadadilnaeem/Kidney-Disease-Classification-Using-MLFlow-And-DVC.mlflow"
+            MLFLOW_TRACKING_USERNAME="muhammadadilnaeem"
+            MLFLOW_TRACKING_PASSWORD="d77b3df886771c7712d09e78e20a"
+            ```
+
+        - Then for tracking we will write code. example of MLflow code is:
       
             ```bash
             def log_into_mlflow(self):
@@ -546,7 +554,7 @@
                             mlflow.keras.log_model(self.model, "model")
             ```
 
-          - You need to remember that **mlflow** is just for **tracking of best parameters** of model. Once you get best parameters you need to comment off that part of code. Like:
+          - You need to remember that **mlflow** is just for **tracking of best parameters** of model. Once you get best parameters you need to **comment off that part of code**. Like:
 
               ```bash
               evaluation.log_into_mlflow()
@@ -571,6 +579,8 @@
                 ```bash
                 dvc dag
                 ```            
+
+                
 
 
 
