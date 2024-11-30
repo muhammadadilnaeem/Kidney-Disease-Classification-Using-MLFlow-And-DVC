@@ -102,9 +102,7 @@ class ConfigurationManager:
         # Initialize the EvaluationConfig with relevant parameters
         eval_config = EvaluationConfig(
             path_of_model="artifacts/training/model.h5",
-            # training_data="artifacts/data_ingestion/Chest-CT-Scan-data",
-            validation_data_dir="artifacts/data_ingestion/kidney-ct-scan-image/valid",
-            training_data="artifacts/data_ingestion/kidney-ct-scan-image/train",
+            training_data="artifacts/data_ingestion/kidney-ct-scan-image",
             mlflow_uri="https://dagshub.com/muhammadadilnaeem/Kidney-Disease-Classification-Using-MLFlow-And-DVC.mlflow",
             all_params=self.params,
             params_image_size=self.params.IMAGE_SIZE,
