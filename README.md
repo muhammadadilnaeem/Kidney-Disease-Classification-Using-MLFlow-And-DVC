@@ -8,7 +8,7 @@ This project demonstrates the implementation of a machine learning pipeline for 
 
 
 
-## Table of Contents
+## **Table of Contents**
 1. [Introduction](#introduction)
 2. [Features](#features)
 3. [Installation](#installation)
@@ -16,8 +16,7 @@ This project demonstrates the implementation of a machine learning pipeline for 
 5. [Project Structure](#project-structure)
 6. [Technologies Used](#technologies-used)
 7. [Results](#results)
-8. [Contributing](#contributing)
-9. [License](#license)
+8. [License](#license)
 
 
 
