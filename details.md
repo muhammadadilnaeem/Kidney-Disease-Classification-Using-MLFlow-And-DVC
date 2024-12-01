@@ -580,7 +580,218 @@
                 dvc dag
                 ```            
 
-                
+### **AWS-CICD-Deployment-Wiith-Github-Actions**
+
+10. Now we Need to Containerize our Application. For this we will use `Docker`. In order to do this we first need to create a `Dockerfile` then we will write code in it:
+ 
+    ```bash
+    # Use the official Python 3.8 slim image as the base image
+    FROM python:3.8-slim-buster
+
+    # Update the package list and install the AWS CLI
+    RUN apt update -y && apt install awscli -y
+
+    # Set the working directory inside the container to /app
+    WORKDIR /app
+
+    # Copy the current directory contents into the /app directory in the container
+    COPY . /app
+
+    # Install the Python dependencies listed in requirements.txt
+    RUN pip install -r requirements.txt
+
+    # Specify the command to run the application
+    CMD ["python3", "streamlit.py"]
+    ```
+    -  After building docker Image of source code we will push that `Dockerfile` in **AWS ECR** (Amazon Elastic Container Registry).
+
+    -  We will launch **EC2**.
+
+    -  Then we will pull Dockerimage from **ECR in **EC2**. 
+
+    -  After this we will launch Dockerimage in **EC2**.
+
+
+11. **Create an IAM (Identity and Access Management)** :
+ 
+    - Log into **AWS Console**. Search **IAM** in search bar and Select it.
+
+    - Click on **Users**, and Create new user by pressing **Create User** button.
+     
+      - Set **User name**.
+        - In our case Let's name it **kidney disease classifier** and click on **Next** button.
+
+    - Next **Set Permissions** tab will appear.
+
+      - In **Permissions options** select
+        - **Attach policies directly** and then search and select these 2 policies and then Press **Next** button.
+         
+          - **AmazonEC2ContainerRegistryFullAccess**             
+          - **AmazonEC2FullAccess**
+      
+      - In **Review and create** tab just press **Create user** button. Your user will be created.
+      
+      - Now you will go to **users** click **kidney disease classifier** user.
+        
+        - Then go to **Security credientials** and scroll down and Select **Access keys** and press **Create access key** button.
+        
+          - Then select **Command Line Interface (CLI)** and press **Next** button. Then on next page press **Create access keys** button.
+          
+          - It is better to **Download .csv file** which has your credentials. and then Press **Done** button.
+
+13. **Create an ECR (Elastic Container Registry) Repository** :
+ 
+    - Search **ECR** in search bar and Select it.
+      
+      - Click on **Get Started** button. 
+      - **General Settings** page will appear.
+        
+        - Select **Private** and give a **repository name** in our case it will be **kidney disease classifier**, then hit **Create repository** button.
+      
+      - Now Copy the **URI** and save it somewhere safe we will use it later.
+      - Also keep note of your **region**.
+
+13. **Create EC2 instance (Virtual server in the AWS Cloud)**
+    
+    - Search **EC2** in search bar and Select it.
+      
+      - Press **Launch Instance** button.
+      1. Now name machine in our case it will be **kidney disease classifier**.
+      2. Select **Ubuntu** machine.
+      3. Select instance type in our case let's say we have **t2.medium**.
+      4. Next Select **Create new key pair**. name the same **kidney disease classifier** and hit **Create key pair** button.
+      5. In **Network settings** select checkbox:
+        - **Allow HTTPS traffic from the internet**                                                      
+        - **Allow HTTP traffic from the internet**
+      6. In **Storage** tab you can set size. In our case let's keep it **10 GB**.
+      7. Hit **Launch instance** button.
+      8. You will see **Instances** tab. Wait for few seconds. When it shows machine status running.
+      9. Click on **Instance ID** and it will take you on new page.
+      10. Press **Connect** button.
+      11. Now we need to run few commands which are:
+
+        ```bash
+        # Optional commands
+
+        # update the machine
+        sudo apt-get update -y
+
+        sudo apt-get upgrade
+
+        # Required commands
+
+        # install docker in the ubuntu machine
+        curl -fsSL https://get.docker.com -o get-docker.sh
+
+        # installs Docker with superuser privileges
+        sudo sh get-docker.sh
+
+        # add user "ubuntu" to the "docker" group
+        sudo usermod -aG docker ubuntu
+
+        # activate new group permissions for "docker."
+        newgrp docker
+
+        # verify docker is working fine
+        docker --version
+        ```   
+
+    - Now we need to **Configure EC2 as self-hosted runner** for this go to **github project repository settings**:
+      
+      - Click on **Actions** Option, select **Runners**.
+        - Click on **New self hosted runner**.
+        - In next page select **linux** and execute the below commands one by one in running **EC2** machine:
+
+        ```bash
+        # Download
+
+        # Create a folder
+        $ mkdir actions-runner && cd actions-runner
+
+        # Download the latest runner package
+        $ curl -o actions-runner-linux-x64-2.321.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.321.0/actions-runner-linux-x64-2.321.0.tar.gz
+
+        # Optional: Validate the hash
+        $ echo "ba46ba7ce3a4d7236b16fbe09423fb453bc08f866b24f04d549ec89f1722a29e  actions-runner-linux-x64-2.321.0.tar.gz" | shasum -a 256 -c
+
+        # Extract the installer
+        $ tar xzf ./actions-runner-linux-x64-2.321.0.tar.gz
+
+        ---------------------------------------------------
+
+        # Configure
+
+        # Create the runner and start the configuration experience
+        $ ./config.sh --url https://github.com/muhammadadilnaeem/Chest-Cancer-Classification-Using-MLflow-and-DVC --token BGZ6LQQ7T4NQM6V7KTRFELFSFJC62S
+
+        # 1. for runner group just press enter button.
+
+        # 2. for runner name enter "self-hosted"
+
+        # 3. again press enter.
+        
+        # 4. again press enter.
+
+
+        # Last step, run it!
+        $ ./run.sh
+
+        ---------------------------------------------------
+
+        # optional
+
+        # Using your self-hosted runner
+
+        # Use this YAML in your workflow file for each job
+        runs-on: self-hosted
+        ```
+
+        - To verify this go back to github in **Runners** You will see **self-hosted** runner status as **Idle**.
+
+14. **Setting Up Github Secrets** : 
+
+    - Go back to your project repository settings.
+      
+      - Go to **Secrets and variables** tab.
+        - Click on **Action**
+          - Click on **New Repository secret**
+          - Add following Secrets
+
+          ```bash
+          AWS_ACCESS_KEY_ID=
+
+          AWS_SECRET_ACCESS_KEY=
+
+          AWS_REGION= us-east-1
+
+          AWS_ECR_LOGIN_URI= 
+
+          ECR_REPOSITORY_NAME= kidney disease classifier
+          ```    
+
+15. Go back to your instance.
+    
+    - Select **Security** tab.
+      - In same tab click on **Security groups** which will look like numbers.
+        - Click on **Edit inbound rules** button.
+        - Click on **Add rule** button.
+        - Infront of **Cuntom TCP** enter your port range suppose we have **8080** and **0.0.0.0** and click **save rules** button.
+    
+    - Go back to your **EC2** Select **Running Machine** and copy **Public iPv4 address**.
+
+16. Go to google and past address and add **port** number at the end
+    
+    ```bash
+    http://650.122.251:8080
+    ```    
+
+    - Demonstarate your web app works **fine**.
+
+17. Then at the end to avoid the extra charger terminate the instance. for this
+    - Select the machine, click on **Instance State** and select **terminate instance** and press **Terminate** button.
+
+18. Also delete your **ECR**.
+19. Also delete your **IAM**.
 
 
 
