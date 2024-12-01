@@ -768,18 +768,19 @@
 
           ECR_REPOSITORY_NAME= kidney disease classifier
           ```    
-
-15. Go back to your instance.
+15. If you want to add a specific **port number**,
     
-    - Select **Security** tab.
-      - In same tab click on **Security groups** which will look like numbers.
-        - Click on **Edit inbound rules** button.
-        - Click on **Add rule** button.
-        - Infront of **Cuntom TCP** enter your port range suppose we have **8080** and **0.0.0.0** and click **save rules** button.
-    
-    - Go back to your **EC2** Select **Running Machine** and copy **Public iPv4 address**.
+    - Go back to your **EC2** instance.
+        
+        - Select **Security** tab.
+        - In same tab click on **Security groups** which will look like numbers.
+            - Click on **Edit inbound rules** button.
+            - Click on **Add rule** button.
+            - Infront of **Cuntom TCP** enter your port range suppose we have **8080** and **0.0.0.0** and click **save rules** button.
+        
+        - Go back to your **EC2** Select **Running Machine** and copy **Public iPv4 address**.
 
-16. Go to google and past address and add **port** number at the end
+16. Go to google and past address and add **port number** at the end
     
     ```bash
     http://650.122.251:8080
@@ -787,7 +788,7 @@
 
     - Demonstarate your web app works **fine**.
 
-17. Then at the end to avoid the extra charger terminate the instance. for this
+17. Then at the end to avoid the extra charger terminate the **instance**. for this
     - Select the machine, click on **Instance State** and select **terminate instance** and press **Terminate** button.
 
 18. Also delete your **ECR**.
